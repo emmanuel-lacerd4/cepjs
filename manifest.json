@@ -1,0 +1,28 @@
+{
+    "name": "Gasolina ou Etanol?",
+    "short_name": "Flex",
+    "start_url": "/cepjs/",
+    "scope": "/",
+    "display": "standalone",
+    "theme_color": "#faa300",
+    "background": "#fff",
+    "orientation": "portrait-primary",
+    "description": "Aplicativo para verificar o combustivel mais vantajoso em carros flex.",
+    "dir": "ltr",
+    "lang": "pt-BR",
+    
+    "screenshots": [
+        {
+            "src": "./img/screenshot1.png",
+            "sizes": "367x652",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "./img/screenshot2.png",
+            "sizes": "942x667",
+            "type": "image/png",
+            "form_factor": "wide"
+        }
+    ]
+}
