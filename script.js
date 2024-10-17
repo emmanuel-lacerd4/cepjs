@@ -13,37 +13,6 @@ if ('serviceWorker' in navigator) {
         })
 }
 
-
-const dddMap = {
-    'AC': '68',
-    'AL': '82',
-    'AP': '96',
-    'AM': '92',
-    'BA': '71',
-    'CE': '85',
-    'DF': '61',
-    'ES': '27',
-    'GO': '62',
-    'MA': '98',
-    'MT': '65',
-    'MS': '67',
-    'MG': '31',
-    'PA': '91',
-    'PB': '83',
-    'PR': '41',
-    'PE': '81',
-    'PI': '86',
-    'RJ': '21',
-    'RN': '84',
-    'RS': '51',
-    'RO': '69',
-    'RR': '95',
-    'SC': '48',
-    'SP': '11',
-    'SE': '79',
-    'TO': '63',
-};
-
 function buscarEndereco() {
     let cep = document.getElementById('cep').value;
     let urlAPI = `https://viacep.com.br/ws/${cep}/json/`;
@@ -51,17 +20,19 @@ function buscarEndereco() {
     fetch(urlAPI)
         .then(response => response.json())
         .then(dados => {
-            document.getElementById('logradouro').value = dados.logradouro;
-            document.getElementById('bairro').value = dados.bairro;
-            document.getElementById('cidade').value = dados.localidade;
-            document.getElementById('uf').value = dados.uf;
+            document.getElementById('logradouro').value = dados.logradouro || '';
+            document.getElementById('bairro').value = dados.bairro || '';
+            document.getElementById('cidade').value = dados.localidade || '';
+            document.getElementById('uf').value = dados.uf || '';
 
-            // Atribuir o DDD com base no estado
-            const uf = dados.uf;
-            document.getElementById('ddd').value = dddMap[uf] || '';
+            // Preencher o DDD automaticamente
+            if (dados.ddd) {
+                document.getElementById('ddd').value = dados.ddd;
+            }
         })
         .catch(error => console.error('Erro ao buscar o endereço:', error));
 }
+
 
 // Formatar CEP
 function formatarCEP(input) {
@@ -95,4 +66,30 @@ function formatarCelular(input) {
         value = value.replace(/(\d{2})/, '($1) '); // Adiciona parênteses
     }
     input.value = value;
+}
+
+function verificarCampos() {
+    const camposObrigatorios = [
+        'nome', 'cpf', 'ddd', 'celular', 'cep',
+        'logradouro', 'numero', 'numero', 'cidade', 'uf', 'bairro'
+    ];
+    let camposVazios = [];
+
+    // Verifica se os campos obrigatórios estão preenchidos
+    camposObrigatorios.forEach(campo => {
+        const elemento = document.getElementById(campo);
+        if (!elemento.value.trim()) {
+            camposVazios.push(campo);
+            elemento.style.borderColor = 'red'; // Destaca o campo vazio
+        } else {
+            elemento.style.borderColor = ''; // Remove o destaque caso preenchido
+        }
+    });
+
+    if (camposVazios.length > 0) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+    } else {
+        alert('Todos os campos foram preenchidos corretamente!');
+        // Aqui você pode adicionar a lógica para salvar os dados
+    }
 }

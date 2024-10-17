@@ -11,84 +11,51 @@
     <link rel="manifest" href="manifest.json">
 
     <script>
-        const dddMap = {
-            'AC': '68',
-            'AL': '82',
-            'AP': '96',
-            'AM': '92',
-            'BA': '71',
-            'CE': '85',
-            'DF': '61',
-            'ES': '27',
-            'GO': '62',
-            'MA': '98',
-            'MT': '65',
-            'MS': '67',
-            'MG': '31',
-            'PA': '91',
-            'PB': '83',
-            'PR': '41',
-            'PE': '81',
-            'PI': '86',
-            'RJ': '21',
-            'RN': '84',
-            'RS': '51',
-            'RO': '69',
-            'RR': '95',
-            'SC': '48',
-            'SP': '11',
-            'SE': '79',
-            'TO': '63',
-        };
-
         function formatCep(value) {
             // Remove todos os caracteres que não são dígitos
-            value = value.replace(/\D/g, '');
+            value = value.replace(/\D/g, '')
             // Formata o CEP
-            return value.replace(/(\d{5})(\d)/, '$1-$2');
+            return value.replace(/(\d{5})(\d)/, '$1-$2')
         }
 
         function formatCpf(value) {
             // Remove todos os caracteres que não são dígitos
-            value = value.replace(/\D/g, '');
+            value = value.replace(/\D/g, '')
             // Formata o CPF
-            return value.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{2})$/, '-$1');
+            return value.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{2})$/, '-$1')
         }
 
         function formatCelular(value) {
             // Remove todos os caracteres que não são dígitos
             value = value.replace(/\D/g, '');
             // Adiciona o hífen entre o nono e o décimo dígito
-            return value.replace(/(\d{5})(\d)/, '$1-$2');
+            return value.replace(/(\d{5})(\d)/, '$1-$2')
         }
 
         function buscarEndereco() {
-            let cep = document.getElementById('cep').value;
-            let urlAPI = `https://viacep.com.br/ws/${cep}/json/`;
+            let cep = document.getElementById('cep').value
+            let urlAPI = `https://viacep.com.br/ws/${cep}/json/`
 
             fetch(urlAPI)
                 .then(response => response.json())
                 .then(dados => {
-                    document.getElementById('logradouro').value = dados.logradouro;
-                    document.getElementById('bairro').value = dados.bairro;
-                    document.getElementById('cidade').value = dados.localidade;
-                    document.getElementById('uf').value = dados.uf;
-
-                    // Atribuir o DDD com base no estado
-                    const uf = dados.uf;
-                    document.getElementById('ddd').value = dddMap[uf] || '';
+                    document.getElementById('logradouro').value = dados.logradouro
+                    document.getElementById('bairro').value = dados.bairro
+                    document.getElementById('cidade').value = dados.localidade
+                    document.getElementById('uf').value = dados.uf
+                    document.getElementById('ddd').value = dados.ddd
                 })
-                .catch(error => console.error('Erro ao buscar o endereço:', error));
+                .catch(error => console.error('Erro ao buscar o endereço:', error))
         }
 
         function formatarCampos() {
-            const cepInput = document.getElementById('cep');
-            const cpfInput = document.getElementById('cpf');
-            const celularInput = document.getElementById('celular');
+            const cepInput = document.getElementById('cep')
+            const cpfInput = document.getElementById('cpf')
+            const celularInput = document.getElementById('celular')
 
-            cepInput.value = formatCep(cepInput.value);
-            cpfInput.value = formatCpf(cpfInput.value);
-            celularInput.value = formatCelular(celularInput.value);
+            cepInput.value = formatCep(cepInput.value)
+            cpfInput.value = formatCpf(cpfInput.value)
+            celularInput.value = formatCelular(celularInput.value)
         }
     </script>
 </head>
@@ -97,79 +64,96 @@
     <form onsubmit="event.preventDefault(); buscarEndereco();">
         <div>
             <label for="nome">Nome Completo:</label>
-            <input type="text" id="nome" placeholder="Digite seu nome completo" required>
+            <input type="text" id="nome" placeholder="Digite seu nome completo" required maxlength="51">
         </div>
 
         <div>
             <label for="cpf">CPF:</label>
-            <input type="text" id="cpf" placeholder="Digite seu CPF" required oninput="formatarCampos()">
+            <input type="text" id="cpf" placeholder="Digite seu CPF" required oninput="formatarCampos()" maxlength="14">
         </div>
 
-        <div>
-            <label for="celular">Número de Celular:</label>
-            <input type="text" id="celular" placeholder="Digite seu número de celular" required
-                oninput="formatarCampos()">
+        <div class="ddd-celular-container">
+            <div>
+                <label for="ddd">DDD:</label>
+                <input type="text" id="ddd" placeholder="DDD" maxlength="2">
+            </div>
+            <div>
+                <label for="celular">Número de Celular:</label>
+                <input type="text" id="celular" placeholder="Digite seu número de celular" required
+                    oninput="formatarCampos()" maxlength="10">
+            </div>
         </div>
+
 
         <div>
             <label for="cep">CEP:</label>
-            <input type="text" id="cep" placeholder="Digite o CEP" required oninput="formatarCampos()">
+            <input type="text" id="cep" placeholder="Digite o CEP" required oninput="formatarCampos()" maxlength="9">
             <button type="submit">Buscar</button>
         </div>
 
         <div class="cidade-uf-container">
             <div>
                 <label for="cidade">Cidade:</label>
-                <input type="text" id="cidade" placeholder="Digite a cidade" readonly>
+                <input type="text" id="cidade" placeholder="Digite a cidade">
             </div>
             <div>
                 <label for="uf">UF:</label>
                 <select id="uf" required>
                     <option value="" disabled selected>Selecione</option>
-                    <option value="AC">Acre (AC)</option>
-                    <option value="AL">Alagoas (AL)</option>
-                    <option value="AP">Amapá (AP)</option>
-                    <option value="AM">Amazonas (AM)</option>
-                    <option value="BA">Bahia (BA)</option>
-                    <option value="CE">Ceará (CE)</option>
-                    <option value="DF">Distrito Federal (DF)</option>
-                    <option value="ES">Espírito Santo (ES)</option>
-                    <option value="GO">Goiás (GO)</option>
-                    <option value="MA">Maranhão (MA)</option>
-                    <option value="MT">Mato Grosso (MT)</option>
-                    <option value="MS">Mato Grosso do Sul (MS)</option>
-                    <option value="MG">Minas Gerais (MG)</option>
-                    <option value="PA">Pará (PA)</option>
-                    <option value="PB">Paraíba (PB)</option>
-                    <option value="PR">Paraná (PR)</option>
-                    <option value="PE">Pernambuco (PE)</option>
-                    <option value="PI">Piauí (PI)</option>
-                    <option value="RJ">Rio de Janeiro (RJ)</option>
-                    <option value="RN">Rio Grande do Norte (RN)</option>
-                    <option value="RS">Rio Grande do Sul (RS)</option>
-                    <option value="RO">Rondônia (RO)</option>
-                    <option value="RR">Roraima (RR)</option>
-                    <option value="SC">Santa Catarina (SC)</option>
-                    <option value="SP">São Paulo (SP)</option>
-                    <option value="SE">Sergipe (SE)</option>
-                    <option value="TO">Tocantins (TO)</option>
+                    <option value="AC">AC</option>
+                    <option value="AL">AL</option>
+                    <option value="AP">AP</option>
+                    <option value="AM">AM</option>
+                    <option value="BA">BA</option>
+                    <option value="CE">CE</option>
+                    <option value="DF">DF</option>
+                    <option value="ES">ES</option>
+                    <option value="GO">GO</option>
+                    <option value="MA">MA</option>
+                    <option value="MT">MT</option>
+                    <option value="MS">MS</option>
+                    <option value="MG">MG</option>
+                    <option value="PA">PA</option>
+                    <option value="PB">PB</option>
+                    <option value="PR">PR</option>
+                    <option value="PE">PE</option>
+                    <option value="PI">PI</option>
+                    <option value="RJ">RJ</option>
+                    <option value="RN">RN</option>
+                    <option value="RS">RS</option>
+                    <option value="RO">RO</option>
+                    <option value="RR">RR</option>
+                    <option value="SC">SC</option>
+                    <option value="SP">SP</option>
+                    <option value="SE">SE</option>
+                    <option value="TO">TO</option>
                 </select>
             </div>
+        </div>
+
+        <div class="logradouro-numero-container">
             <div>
-                <label for="ddd">DDD:</label>
-                <input type="text" id="ddd" placeholder="DDD" readonly>
+                <label for="logradouro">Logradouro:</label>
+                <input type="text" id="logradouro" placeholder="Digite o logradouro">
+            </div>
+            <div>
+                <label for="numero">Número:</label>
+                <input type="text" id="numero" placeholder="Digite o número">
             </div>
         </div>
 
         <div>
-            <label for="logradouro">Logradouro:</label>
-            <input type="text" id="logradouro" placeholder="Digite o logradouro" readonly>
+            <label for="complemento">Complemento:</label>
+            <input type="text" id="complemento" placeholder="Digite o complemento (opcional)">
         </div>
+
 
         <div>
             <label for="bairro">Bairro:</label>
-            <input type="text" id="bairro" placeholder="Digite o bairro" readonly>
+            <input type="text" id="bairro" placeholder="Digite o bairro">
         </div>
+        <button type="reset">Limpar</button>
+        <button type="button" onclick="verificarCampos()">Salvar</button>
     </form>
     <script src="script.js"></script>
 </body>

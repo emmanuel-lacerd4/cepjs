@@ -120,3 +120,35 @@ button:hover {
         /* Menos preenchimento */
     }
 }
+
+.ddd-celular-container {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.ddd-celular-container div {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .ddd-celular-container {
+        flex-direction: column;
+    }
+}
+
+.logradouro-numero-container {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.logradouro-numero-container div {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .logradouro-numero-container {
+        flex-direction: column;
+    }
+}
