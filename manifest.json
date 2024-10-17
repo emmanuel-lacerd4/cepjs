@@ -1,6 +1,6 @@
 {
     "name": "Gasolina ou Etanol?",
-    "short_name": "Flex",
+    "short_name": "Formulario de Endereço",
     "start_url": "/cepjs/",
     "scope": "/",
     "display": "standalone",
