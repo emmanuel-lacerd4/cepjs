@@ -9,7 +9,7 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker
         .register('/sw.js')
         .then(() => {
-            console.log("Servicer Worker registrado.")
+            console.log("Service Worker registrado.")
         })
 }
 
